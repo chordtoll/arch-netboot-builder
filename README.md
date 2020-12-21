@@ -19,6 +19,8 @@ Python3 must be installed.
 
 No existing TFTP server may be installed.
 
+A NFS server must be set up
+
 A ZFS filesystem should be created, and `tftpserv.py` should be placed in the root of this filesystem and set to run at boot. This filesystem should be stored in the `NAS_IMAGE_PATH` and `ZFS_NAS_IMAGE_PATH` variables in `build_config.py`
 
 A user account on the NAS machine should have ownership of the `NAS_IMAGE_PATH` directory.
@@ -27,6 +29,9 @@ This user's name should be stored in the `NAS_USER` variable in `build_config.py
 The NAS's IP address should be stored in the `NAS_IP` variable in `build_config.py`.
 
 The `NAS_USER` account on the NAS machine should be set up to recognize the build machine's root SSH key, and sudo should be configured to not require a password from this user.
+
+### Network setup
+PXE must be set up to boot from the NAS machine, at path `/grub/i386-pc/core.0`
 
 ## Invocation
 `./build_image.py` starts the build.
