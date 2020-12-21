@@ -1,0 +1,10 @@
+*.tar
+*.tar.zst
+build_config.py
+.install
+/*.sh
+/__pycache__
+zpool.cache
+rsync.log
+/root_files/usr/local/bin
+/root_files/usr/bin

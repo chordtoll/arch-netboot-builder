@@ -1,0 +1,7 @@
+NAS_USER='ssh_user_for_nas'
+NAS_IP='ip_address_for_nas'
+NAS_IMAGE_PATH='/path/to/remote/directory'
+ROOT_PASSWORD='password1'
+INNER_USER='target_username'
+INNER_PASSWORD='password2'
+ZFS_INSTALLROOT='tank/path_to_installroot/'
