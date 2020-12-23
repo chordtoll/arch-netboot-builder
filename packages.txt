@@ -176,3 +176,5 @@ cadence
 carla
 ladspa-plugins
 xfce4-alsa-plugin
+ffpb
+signal-desktop
