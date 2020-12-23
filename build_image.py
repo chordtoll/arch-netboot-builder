@@ -160,7 +160,7 @@ class buildstage():
         return self.run_cmd('arch-chroot "%s" bash -c %s'%(root,shlex.quote(cmd)),test,quiet,silent,log)
     def run_remote(self,cmd,test=False,quiet=False,silent=False,log=None):
         cmd_quoted=shlex.quote(cmd)
-        return self.run_cmd(f'sudo -u {NAS_USER} ssh -n -o ForwardX11=no -t {NAS_IP} {cmd_quoted}',test,quiet,silent,log)
+        return self.run_cmd(f'ssh -n -o ForwardX11=no -t {NAS_USER}@{NAS_IP} {cmd_quoted}',test,quiet,silent,log)
     def capture_cmd(self,cmd,test=False,silent=False):
         #print(cmd)
         #assert(False)
@@ -174,7 +174,7 @@ class buildstage():
         return self.capture_cmd('arch-chroot "%s" %s'%(root,cmd),test)
     def capture_remote(self,cmd,test=False,silent=False):
         cmd_quoted=shlex.quote(cmd)
-        return self.capture_cmd(f'sudo -u {NAS_USER} ssh -o ForwardX11=no -t {NAS_IP} {cmd_quoted}',test,silent)
+        return self.capture_cmd(f'ssh -o ForwardX11=no -t {NAS_USER}@{NAS_IP} {cmd_quoted}',test,silent)
     def test_equal(self,a,b):
         with open(a,'rb') as f:
             ca=f.read()
@@ -237,7 +237,7 @@ class stagePacmanConf(stageInstallFile):
 
 class stageInitramfs(buildstage):
     def stagename(self):
-        return 'update 1'
+        return 'initramfs'
     def deps(self):
         return [stagePacstrap]
     def execute(self,handler):
@@ -587,7 +587,7 @@ class stageFinish(buildstage):
         self.run_remote(f'sudo zfs snapshot {ZFS_NAS_IMAGE_PATH}/builds/{parentimage}@{timestamp}')
         self.run_remote(f'sudo zfs clone {ZFS_NAS_IMAGE_PATH}/builds/{parentimage}@{timestamp} {ZFS_NAS_IMAGE_PATH}/builds/{timestamp}')
         self.run_remote(f'sudo zfs promote {ZFS_NAS_IMAGE_PATH}/builds/{timestamp}')
-        self.run_cmd(f'rsync -ahxXSAHv --delete --rsync-path="sudo rsync" {root}/ {NAS_USER}@{NAS_IP}:{NAS_IMAGE_PATH}/builds/{timestamp}/ 2>&1 | tee rsync.log'
+        self.run_cmd(f'rsync -ahxXSAHv --delete --rsync-path="sudo rsync" {root}/ {NAS_USER}@{NAS_IP}:{NAS_IMAGE_PATH}/builds/{timestamp}/ 2>&1 | tee rsync.log')
         self.run_cmd(f'rsync -v --rsync-path="sudo rsync" {cwd}/rsync.log {NAS_USER}@{NAS_IP}:{NAS_IMAGE_PATH}/builds/{timestamp}/.install/rsync.log')
         self.run_remote(f'echo {timestamp} > {NAS_IMAGE_PATH}/mounts/latest')
         self.run_remote(f'echo {timestamp} > {NAS_IMAGE_PATH}/mounts/c85b761a2c47')
