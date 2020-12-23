@@ -41,7 +41,7 @@ python-pip
 chromedriver
 google-chrome-beta
 sdl
-ntp
+chrony
 jre-openjdk
 #arduino
 qbittorrent
